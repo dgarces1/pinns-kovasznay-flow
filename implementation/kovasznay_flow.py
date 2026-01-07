@@ -1,21 +1,18 @@
-"""Backend supported: tensorflow.compat.v1, tensorflow, pytorch, paddle"""
 import deepxde as dde
 import imageio
 import os
 from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
+import imageio.v2 as imageio
 
-# ----------------------------
-# Parâmetros do problema
-# ----------------------------
-Re = 20 # regime laminar -> 'Re fixo'
+
+#parametros
+Re = 20 # regime laminar 
 nu = 1 / Re
 l = 1 / (2 * nu) - np.sqrt(1 / (4 * nu**2) + 4 * np.pi**2)
 
-# ----------------------------
-# PDE Kovasznay
-# ----------------------------
+#pdes
 def pde(x, u):
     u_vel, v_vel, p = u[:, 0:1], u[:, 1:2], u[:, 2:3]
 
@@ -38,9 +35,7 @@ def pde(x, u):
 
     return [momentum_x, momentum_y, continuity]
 
-# ----------------------------
-# Solução analítica
-# ----------------------------
+#solucao analitica
 def u_func(x):
     return 1 - np.exp(l * x[:, 0:1]) * np.cos(2 * np.pi * x[:, 1:2])
 
@@ -50,9 +45,7 @@ def v_func(x):
 def p_func(x):
     return 0.5 * (1 - np.exp(2 * l * x[:, 0:1]))
 
-# ----------------------------
-# Domínio e condições de contorno
-# ----------------------------
+#domain
 def boundary_outflow(x, on_boundary):
     return on_boundary and dde.utils.isclose(x[0], 1)
 
@@ -71,9 +64,6 @@ data = dde.data.PDE(
     num_test=10000,
 )
 
-# ----------------------------
-# Callback para registrar erros suavizados
-# ----------------------------
 class ErrorTracker(dde.callbacks.Callback):
     def __init__(self):
         super().__init__()
@@ -83,7 +73,7 @@ class ErrorTracker(dde.callbacks.Callback):
 
     def on_epoch_end(self):
         epoch = self.model.train_state.epoch
-        # registrar erro a cada 10 épocas
+        # registrar erro a cada 100 épocas
         if epoch % 100 != 0:
             return
 
@@ -99,9 +89,7 @@ class ErrorTracker(dde.callbacks.Callback):
         self.errors_v.append(dde.metrics.l2_relative_error(ve, v_pred))
         self.errors_p.append(dde.metrics.l2_relative_error(pe, p_pred))
 
-# ============================
-# GIF – salvar frames
-# ============================
+#gifs
 os.makedirs("frames", exist_ok=True)
 
 def save_frame(model, epoch):
@@ -136,9 +124,7 @@ class GIFCallback(dde.callbacks.Callback):
 
 
 
-# ----------------------------
-# Rede Neural
-# ----------------------------
+#arquitetura da rede
 net = dde.nn.FNN([2] + 4 * [50] + [3], "tanh", "Glorot normal")
 model = dde.Model(data, net)
 
@@ -146,18 +132,14 @@ tracker = ErrorTracker()
 gif_cb = GIFCallback(every=50)
 
 
-# ----------------------------
-# Treinamento
-# ----------------------------
+#train
 model.compile("adam", lr=1e-3)
 model.train(iterations=1000, callbacks=[tracker, gif_cb])  # Adam
 
 model.compile("L-BFGS")
 model.train(callbacks=[tracker, gif_cb])  # L-BFGS
 
-# ----------------------------
-# Plot curvas de erro suavizadas
-# ----------------------------
+#plots
 plt.figure(figsize=(7, 4))
 plt.plot(np.arange(10, 10*len(tracker.errors_u)+1, 10), tracker.errors_u, label="Erro u")
 plt.plot(np.arange(10, 10*len(tracker.errors_v)+1, 10), tracker.errors_v, label="Erro v")
@@ -170,9 +152,7 @@ plt.legend()
 plt.tight_layout()
 plt.show()
 
-# ---------------------------------------------------------
-# Pós-processamento (gráficos originais)
-# ---------------------------------------------------------
+
 nx, ny = 400, 400
 xg = np.linspace(-0.5, 1.0, nx)
 yg = np.linspace(-0.5, 1.5, ny)
@@ -186,14 +166,14 @@ p_pred = pred[:, 2].reshape(ny, nx)
 
 vel_mag = np.sqrt(u_pred**2 + v_pred**2)
 
-# 1) Campo vetorial
+
 plt.figure(figsize=(7, 6))
 plt.title("Linhas de correntes do escoamento")
 plt.streamplot(Xg, Yg, u_pred, v_pred, density=1.3)
 plt.tight_layout()
 plt.show()
 
-# 2) Heatmap da velocidade u
+
 plt.figure(figsize=(7, 6))
 plt.title("Heatmap da velocidade u")
 plt.pcolormesh(Xg, Yg, u_pred, shading="auto")
@@ -201,7 +181,7 @@ plt.colorbar(label="u")
 plt.tight_layout()
 plt.show()
 
-# 2b) Heatmap da velocidade v
+
 plt.figure(figsize=(7, 6))
 plt.title("Heatmap da velocidade v")
 plt.pcolormesh(Xg, Yg, v_pred, shading="auto")
@@ -209,7 +189,7 @@ plt.colorbar(label="v")
 plt.tight_layout()
 plt.show()
 
-# 2c) Heatmap da pressão p
+
 plt.figure(figsize=(7, 6))
 plt.title("Heatmap da pressão p")
 plt.pcolormesh(Xg, Yg, p_pred, shading="auto")
@@ -217,7 +197,7 @@ plt.colorbar(label="p")
 plt.tight_layout()
 plt.show()
 
-# 3) Comparação PINN vs solução exata em cortes horizontais
+
 def plot_cut(ycut):
     pts = np.column_stack([xg, np.full_like(xg, ycut)])
     pred_cut = model.predict(pts)
@@ -246,22 +226,12 @@ def plot_cut(ycut):
 for ycut in [-0.25, 0.5, 1.25]:
     plot_cut(ycut)
 
-# =========================================================
-# GIF de partículas passivas (campo estacionário)
-# =========================================================
 
-import imageio.v2 as imageio
-
-# ----------------------------
-# Parâmetros
-# ----------------------------
 n_particles = 400
 n_steps = 120
 dt = 0.02
 
-# ----------------------------
-# Inicialização
-# ----------------------------
+
 np.random.seed(1)
 particles = np.zeros((n_particles, 2))
 particles[:, 0] = np.random.uniform(-0.5, 1.0, n_particles)
@@ -273,9 +243,7 @@ def velocity_field(xy):
 
 os.makedirs("particle_gif", exist_ok=True)
 
-# ----------------------------
-# MALHA DO CAMPO (uma vez só)
-# ----------------------------
+
 nx, ny = 40, 40   # pouco denso para não poluir
 xg = np.linspace(-0.5, 1.0, nx)
 yg = np.linspace(-0.5, 1.5, ny)
@@ -285,9 +253,7 @@ UV = velocity_field(XY)
 Ug = UV[:, 0].reshape(ny, nx)
 Vg = UV[:, 1].reshape(ny, nx)
 
-# ----------------------------
-# Loop + frames
-# ----------------------------
+
 for step in range(n_steps):
     vel = velocity_field(particles)
     particles += dt * vel
@@ -307,7 +273,7 @@ for step in range(n_steps):
 
     plt.figure(figsize=(6, 5))
 
-    # ===== CAMPO VETORIAL (atrás) =====
+
     plt.quiver(
         Xg, Yg, Ug, Vg,
         color="lightblue",
@@ -315,7 +281,6 @@ for step in range(n_steps):
         width=0.002
     )
 
-    # ===== PARTÍCULAS (vermelhas) =====
     plt.scatter(
         particles[:, 0],
         particles[:, 1],
@@ -333,9 +298,7 @@ for step in range(n_steps):
     plt.savefig(fname, dpi=120)
     plt.close()
 
-# ----------------------------
-# Montar GIF
-# ----------------------------
+
 frames = sorted(os.listdir("particle_gif"))
 images = [imageio.imread(os.path.join("particle_gif", f)) for f in frames]
 
