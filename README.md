@@ -22,20 +22,10 @@ Under the assumptions of incompressible, steady, and two-dimensional flow, with 
 $$
 \begin{aligned}
 \frac{\partial u}{\partial x} + \frac{\partial v}{\partial y} &= 0, \\
-\frac{\partial u^2}{\partial x} + \frac{\partial (uv)}{\partial y}
-&= -\frac{1}{\rho} \frac{\partial p}{\partial x}
-+ \frac{1}{Re}
-\left(
-\frac{\partial^2 u}{\partial x^2}
-+ \frac{\partial^2 u}{\partial y^2}
-\right), \\
-\frac{\partial v^2}{\partial y} + \frac{\partial (uv)}{\partial x}
-&= -\frac{1}{\rho} \frac{\partial p}{\partial y}
-+ \frac{1}{Re}
-\left(
-\frac{\partial^2 v}{\partial x^2}
-+ \frac{\partial^2 v}{\partial y^2}
-\right).
+\frac{\partial u^2}{\partial x} + \frac{\partial (uv)}{\partial y} &
+= -\frac{1}{\rho} \frac{\partial p}{\partial x} + \frac{1}{Re} \left(\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right), \\
+\frac{\partial v^2}{\partial y} + \frac{\partial (uv)}{\partial x} &
+= -\frac{1}{\rho} \frac{\partial p}{\partial y} + \frac{1}{Re} \left(\frac{\partial^2 v}{\partial x^2} + \frac{\partial^2 v}{\partial y^2} \right).
 \end{aligned}
 $$
 
