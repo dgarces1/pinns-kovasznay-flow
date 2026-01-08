@@ -104,24 +104,10 @@ The network weights are initialized using the **Glorot normal** initialization s
 The loss function of the PINN is constructed as the sum of the mean squared errors (MSE) of the governing equations and the boundary conditions:
 
 $$
-\mathcal{L} 
+\mathcal{L} = \mathcal{L}_{PDE} + \mathcal{L}_{BC}
 $$.
 
-The PDE loss enforces the Navier–Stokes equations and incompressibility:
 
-$$
-\mathcal{L}_{PDE} = \frac{1}{n} \sum_{i=1}^{n} \left(r_x^2 + r_y^2 + r_c^2 \right)
-$$,
-
-where $r_x$ and $r_y$ are the residuals of the momentum equations, and $r_c$ is the residual of the continuity equation.
-
-The boundary condition loss is defined as:
-
-$$
-\mathcal{L}_{BC} = \frac{1}{n} \sum_{i=1}^{n} \left(r_u^2 + r_v^2 + r_p^2 \right)
-$$,
-
-where $r_u$, $r_v$, and $r_p$ denote the residuals associated with the velocity and pressure boundary conditions.
 
 ---
 
