@@ -103,7 +103,7 @@ The network weights are initialized using the **Glorot normal** initialization s
 
 The loss function of the PINN is constructed as the sum of the mean squared errors (MSE) of the governing equations and the boundary conditions:
 
-$$ \mathcal{L} = \mathcal{L}_{\mathrm{PDE}} + \mathcal{L}_{\mathrm{BC}}$$.
+$$ \mathcal{L} = \mathcal{L}_{\mathrm{PDE}} + \mathcal{L}_{\mathrm{BC}} $$.
 
 The PDE loss enforces the Navier–Stokes equations and incompressibility:
 
