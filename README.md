@@ -6,7 +6,7 @@ This repository presents a numerical study of the Kovasznay flow using Physics-I
 
 The Navier–Stokes equations describe the behavior of viscous fluid flows and constitute the fundamental model of fluid dynamics.
 
-$$
+\begin{equation}
 \begin{aligned}
 \rho\left(
 \frac{\partial \mathbf{u}}{\partial t}
@@ -15,11 +15,11 @@ $$
 &= -\nabla p + \nu \Delta \mathbf{u} + \mathbf{f}, \\
 \nabla\cdot \mathbf{u} &= 0.
 \end{aligned}
-$$
+\end{equation}
 
 Under the assumptions of incompressible, steady, and two-dimensional flow, with a Newtonian fluid and constant viscosity, the Navier–Stokes equations reduce to
 
-$$
+\begin{equation}
 \begin{aligned}
 \frac{\partial u}{\partial x} + \frac{\partial v}{\partial y} &= 0, \\
 \frac{\partial u^2}{\partial x} + \frac{\partial (uv)}{\partial y}
@@ -37,13 +37,13 @@ $$
 + \frac{\partial^2 v}{\partial y^2}
 \right).
 \end{aligned}
-$$
+\end{equation}
 
 where the Reynolds number is defined as
 
-$$
+\begin{equation}
 Re = \frac{V_0 L_0}{\nu}.
-$$
+\end{equation}
 
 ---
 
@@ -51,20 +51,20 @@ $$
 
 This problem admits a closed-form analytical solution derived by **Kovasznay (1948)**:
 
-$$
+\begin{equation}
 \begin{aligned}
 u(x,y) &= 1 - e^{\lambda x}\cos(2\pi y), \\
 v(x,y) &= \frac{\lambda}{2\pi} e^{\lambda x}\sin(2\pi y), \\
 p(x,y) &= \frac{1}{2}\left(1 - e^{2\lambda x}\right),
 \end{aligned}
-$$
+\end{equation}
 
 with
 
-$$
+\begin{equation}
 \lambda = \frac{Re}{2}
 - \sqrt{\left(\frac{Re}{2}\right)^2 + 4\pi^2}.
-$$
+\end{equation}
 
 The Kovasznay flow is widely used as a benchmark problem for validating numerical methods for incompressible Navier–Stokes equations.
 
@@ -75,19 +75,19 @@ The Kovasznay flow is widely used as a benchmark problem for validating numerica
 The computational setup is defined as:
 
 - Computational domain:
-  $$
+  \begin{equation}
   \Omega = [-0.5,\,1.0] \times [-0.5,\,1.5];
-  $$
+  \end{equation}
 - Velocity Dirichlet boundary conditions:
-  $$
+  \begin{equation}
   \mathbf{u}(x,y) = \mathbf{u}_D(x,y),
   \quad (x,y) \in \partial\Omega;
-  $$
+  \end{equation}
 - Pressure prescribed at the outflow boundary:
-  $$
+  \begin{equation}
   p(x,y) = p_D(x,y),
   \quad (x,y) \in \Gamma_{\mathrm{out}}.
-  $$
+  \end{equation}
 
 <p align="center">
   <img src="images/dominio.png" width="500">
@@ -123,17 +123,17 @@ The network weights are initialized using the **Glorot normal** initialization s
 
 The loss function of the PINN is constructed as the sum of the mean squared errors (MSE) of the governing equations and the boundary conditions:
 
-$$
+\begin{equation}
 \mathcal{L}
 =
 \mathcal{L}_{\mathrm{PDE}}
 +
 \mathcal{L}_{\mathrm{BC}}.
-$$
+\end{equation}
 
 The PDE loss enforces the Navier–Stokes equations and incompressibility:
 
-$$
+\begin{equation}
 \mathcal{L}_{\mathrm{PDE}}
 =
 \frac{1}{n}
@@ -141,7 +141,7 @@ $$
 \left(
 r_x^2 + r_y^2 + r_c^2
 \right),
-$$
+\end{equation}
 
 where:
 - $r_x$ and $r_y$ are the residuals of the momentum equations;
@@ -149,7 +149,7 @@ where:
 
 The boundary condition loss is defined as:
 
-$$
+\begin{equation}
 \mathcal{L}_{\mathrm{BC}}
 =
 \frac{1}{n}
@@ -157,7 +157,7 @@ $$
 \left(
 r_u^2 + r_v^2 + r_p^2
 \right),
-$$
+\end{equation}
 
 where $r_u$, $r_v$, and $r_p$ denote the residuals associated with the velocity and pressure boundary conditions.
 
@@ -168,9 +168,9 @@ where $r_u$, $r_v$, and $r_p$ denote the residuals associated with the velocity 
 The training setup adopted in this study is summarized below:
 
 - Computational domain:
-  $$
+  \begin{equation}
   \Omega = [-0.5,\,1.0] \times [-0.5,\,1.5];
-  $$
+  \end{equation}
 - Number of interior collocation points: $n_\Omega = 2601$;
 - Number of boundary points: $n_{\partial\Omega} = 400$;
 - Number of test points: $n_{\text{test}} = 10000$;
