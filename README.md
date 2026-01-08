@@ -70,7 +70,7 @@ The computational setup is defined as:
 - Pressure prescribed at the outflow boundary: $p(x,y) = p_D(x,y), \quad (x,y) \in \Gamma_{\mathrm{out}}$.
 
 <p align="center">
-  <img src="images/dominio.png" width="500">
+  <img src="images/dominio.png" width="400">
 </p>
 
 ---
