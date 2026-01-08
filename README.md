@@ -63,9 +63,9 @@ The Kovasznay flow is widely used as a benchmark problem for validating numerica
 
 The computational setup is defined as:
 
-- Computational domain: $ \Omega = [-0.5,1.0] \times [-0.5,1.5]$;
+- Computational domain: $\Omega = [-0.5,1.0] \times [-0.5,1.5]$;
 
-- Velocity Dirichlet boundary conditions: $\mathbf{u}(x,y) = \mathbf{u}_D(x,y), \quad (x,y) \in \partial\Omega$;
+- Velocity Dirichlet boundary conditions: $\mathbf{u}(x,y) = \mathbf{u}_D(x,y), \quad (x,y) \in \partial \Omega$;
 
 - Pressure prescribed at the outflow boundary: $p(x,y) = p_D(x,y), \quad (x,y) \in \Gamma_{\mathrm{out}}$.
 
@@ -80,7 +80,7 @@ The computational setup is defined as:
 Physics-Informed Neural Networks (PINNs) are neural networks designed to approximate the solution of partial differential equations by embedding physical laws directly into the training process. The governing equations and boundary conditions are enforced through the loss function, allowing the network to learn physically consistent solutions without requiring labeled data.
 
 <p align="center">
-  <img src="images/arquitetura.png" width="500">
+  <img src="images/arquitetura.png" width="800">
 </p>
 
 ---
@@ -104,13 +104,13 @@ The network weights are initialized using the **Glorot normal** initialization s
 The loss function of the PINN is constructed as the sum of the mean squared errors (MSE) of the governing equations and the boundary conditions:
 
 $$
-\mathcal{L} = \mathcal{L}_{\mathrm{PDE}} + \mathcal{L}_{\mathrm{BC}}
+\mathcal{L} = \mathcal{L}_{PDE} + \mathcal{L}_{BC}
 $$.
 
 The PDE loss enforces the Navier–Stokes equations and incompressibility:
 
 $$
-\mathcal{L}_{\mathrm{PDE}} = \frac{1}{n} \sum_{i=1}^{n} \left(r_x^2 + r_y^2 + r_c^2 \right)
+\mathcal{L}_{PDE} = \frac{1}{n} \sum_{i=1}^{n} \left(r_x^2 + r_y^2 + r_c^2 \right)
 $$,
 
 where $r_x$ and $r_y$ are the residuals of the momentum equations, and $r_c$ is the residual of the continuity equation.
@@ -118,7 +118,7 @@ where $r_x$ and $r_y$ are the residuals of the momentum equations, and $r_c$ is 
 The boundary condition loss is defined as:
 
 $$
-\mathcal{L}_{\mathrm{BC}} = \frac{1}{n} \sum_{i=1}^{n} \left(r_u^2 + r_v^2 + r_p^2 \right)
+\mathcal{L}_{BC} = \frac{1}{n} \sum_{i=1}^{n} \left(r_u^2 + r_v^2 + r_p^2 \right)
 $$,
 
 where $r_u$, $r_v$, and $r_p$ denote the residuals associated with the velocity and pressure boundary conditions.
