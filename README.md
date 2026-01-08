@@ -10,12 +10,10 @@ The Navier–Stokes equations describe the behavior of viscous fluid flows and c
 
 $$
 \begin{aligned}
-\rho\left(
-\frac{\partial \mathbf{u}}{\partial t}
-+ \mathbf{u}\cdot\nabla \mathbf{u}
-\right)
-&= -\nabla p + \nu \Delta \mathbf{u} + \mathbf{f}, \\
-\nabla\cdot \mathbf{u} &= 0.
+\rho\left(\frac{\partial \mathbf{u}}{\partial t} + \mathbf{u} \cdot \nabla \mathbf{u} \right) &
+= -\nabla p + \nu \Delta \mathbf{u} + \mathbf{f}, \\
+\nabla \cdot \mathbf{u} &
+= 0.
 \end{aligned}
 $$
 
