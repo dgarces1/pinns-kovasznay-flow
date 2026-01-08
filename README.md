@@ -199,3 +199,16 @@ Differences between the PINN and analytical solutions along the horizontal slice
 <p align="center">
   <img src="images/particles.gif" width="600">
 </p>
+
+
+## References
+
+1. **Lu, L. et al.**  
+   **DeepXDE: A deep learning library for solving differential equations**.  
+   Documentation, 2024.  
+   Available at: https://deepxde.readthedocs.io/en/latest/demos/pinn_forward/Kovasznay.flow.html
+
+2. **Protasevich, T. et al.**  
+   **Multi-stream Physics Hybrid Networks for solving Navier–Stokes equations**.  
+   *arXiv preprint*, arXiv:2504.01891, 2025.  
+   Available at: https://doi.org/10.48550/arXiv.2504.01891
