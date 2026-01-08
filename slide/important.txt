@@ -1,0 +1,5 @@
+Some slides in this presentation contain animated GIFs.
+
+To ensure proper visualization of these animations, it is strongly recommended to open the PDF using a full-featured PDF reader, such as Adobe Acrobat Reader.
+
+Other PDF viewers (e.g., browser-based viewers) may not correctly display animated content.
