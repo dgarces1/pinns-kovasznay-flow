@@ -101,7 +101,7 @@ The network weights are initialized using the **Glorot normal** initialization s
 
 ## Loss Function
 
-The loss function of the PINN is constructed as the sum of the mean squared errors (MSE) of the governing equations and the boundary conditions: $\mathcal{L} = \mathcal{L}_{PDE} + \mathcal{L}_{BC}$
+The loss function of the PINN is constructed as the sum of the mean squared errors (MSE) of the governing equations and the boundary conditions: $\mathcal{L} = \mathcal{L}\_{PDE} + \mathcal{L}\_{BC}$
 
 $$
 \mathcal{L} = \mathcal{L}_{PDE} + \mathcal{L}_{BC}
